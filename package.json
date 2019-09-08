@@ -7,8 +7,11 @@
     "dev": "nodemon -w src --exec \"babel-node src --presets es2015,stage-0\"",
     "build": "babel src -s -D -d dist --presets es2015,stage-0",
     "prestarts": "npm run -s build",
+
     "lint": "eslint src",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+
+    "start":"npm run build && node dist/index"
   },
   "eslintConfig": {
     "parserOptions": {
