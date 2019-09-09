@@ -709,7 +709,7 @@ queryClean={
           result.userDetails = client_details[0];
           result.transactions = transactions
           result.transactionStatus = noTransaction;
-          console.log(result);
+          console.log(transactions,result);
           res.status(statusCode).send(result);
        
 
@@ -717,6 +717,7 @@ queryClean={
       });
     });
   });
+
 
   // /api/v1/client/account/clientFaq/:id --> working
   api.get('/clientFaq/:id', validateToken,  (req, res) => {

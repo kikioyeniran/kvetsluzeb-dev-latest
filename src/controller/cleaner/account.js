@@ -543,6 +543,7 @@ export default ({config, db}) => {
                         result.error = err;
                         res.status(statusCode).send(result);
                     }
+                    console.log(wallet)
                     result.statusCode = statusCode;
                     result.userDetails = cleaner_details[0];
                     result.wallet = wallet;

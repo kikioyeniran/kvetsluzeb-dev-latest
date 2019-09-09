@@ -12,12 +12,12 @@ if (!fs.existsSync(path.join(__dirname, 'public'))) {
   fs.mkdirSync(path.join(__dirname, 'public'));
   fs.mkdirSync(path.join(__dirname, 'public/uploads'))
 }
-
-
-const PORT =process.env.PORT
-// importing the config and routes folders
+//ng the config and routes folders
 import config from './config';
-import routes from './routes';
+import routes from './routes'
+
+const PORT =process.env.PORT||8080;
+// importites from './routes';
 
 let app = express();
 app.server = http.createServer(app);

@@ -155,7 +155,7 @@ export default ({config, db}) => {
                 let walletQuery = {pendingPay:[{cleanerID: cleanerID}]};
                 //Update Client Wallet and Set Pending Pay to empty
                 ClientWallet.updateOne(walletQuery, walletUpdate, (err, updWallet)=>{
-                    var queryCleaner = {cleanerID: cleanerID};
+                    var queryCleaner = {cleanerID: mainCleaner.cleanerID};
                     // Get Cleaner Details
                     CleanerDetails.findOne((queryCleaner), (err, cleanerDetails)=>{
                         console.log(cleanerDetails.fullName);
