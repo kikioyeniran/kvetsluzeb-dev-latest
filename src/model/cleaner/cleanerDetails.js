@@ -40,6 +40,10 @@ let CleanerDetailsSchema = mongoose.Schema({
         type: String,
         //required: true
     },
+     reviews:{
+        type: Number,
+        default: 0
+    },
     rating:{
         type: Number,
         default: 0
@@ -68,6 +72,7 @@ let CleanerDetailsSchema = mongoose.Schema({
         type: Date,
         default: Date.now
     }
+
 });
 
 let CleanerDetails = module.exports = mongoose.model('Cleaner_details', CleanerDetailsSchema);

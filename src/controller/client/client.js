@@ -15,7 +15,7 @@ import CleanerDetails from '../../model/cleaner/cleanerDetails';
 import ClientWallet from '../../model/client/clientWallet';
 import Transactions from '../../model/allTransactions';
 import CleaningSchedule from '../../model/cleaningSchedule'
-
+import Rating from '../../model/Rating';
 // let Client =  require('../../models/client');
 // let ClientDetails =  require('../../models/clientDetails');
 // let Cleaner =  require('../../models/cleaner');
@@ -516,6 +516,60 @@ export default ({config, db}) => {
             result.cs = cs
                 res.status(statusCode).send(result);
         })
+    })
+
+
+    api.post('/review/:clientID/:cleanerID', (req, res)=> {
+           let result =  {};
+            let statusCode = 200;
+            Cleaner.findById(req.params.cleanerID)
+            .exec((err, cleaner) => {
+                CleanerDetails.findOne({cleanerID: cleaner.cleanerID})
+        .exec((err, dets)=> {
+             if(err){
+                            statusCode = 500;
+                            result.statusCode = statusCode;
+                            result.error = err.message;
+                            res.status(statusCode).send(result);
+                            return
+                        }
+                        let {reviews, rating} = dets;
+                        reviews+=1;
+                        rating= parseFloat(((rating+req.body.rating)/reviews).toFixed(1));
+                        dets = {...dets, reviews, rating}
+
+                        let nR = new Rating({
+                            client:req.params.clientID,
+                            cleaner:req.params.cleanerID,
+                            rating:+req.body.rating,
+                            review:req.body.review,
+                        })
+
+                        nR.save((error)=> {
+                              if(err){
+                            statusCode = 500;
+                            result.statusCode = statusCode;
+                            result.error = err.message;
+                            res.status(statusCode).send(result);
+                            return
+                        }
+                        dets.save((error)=> {
+                              if(err){
+                            statusCode = 500;
+                            result.statusCode = statusCode;
+                            result.error = err.message;
+                            res.status(statusCode).send(result);
+                            return
+                        }
+
+                        result.rating = nR;
+                       res.status(statusCode).send(result);
+                    })
+                        })
+
+        })
+            })
+        
     })
     return api;
 }

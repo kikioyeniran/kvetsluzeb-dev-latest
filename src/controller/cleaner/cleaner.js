@@ -7,7 +7,7 @@ import { validateToken } from '../../utils';
 //Bring in Cleaner Models
 import Cleaner from '../../model/cleaner/cleaner';
 import CleanerDetails from '../../model/cleaner/cleanerDetails';
-
+import Rating from '../../model/Rating';
 //Bring in Client Model
 import ClientDetails from '../../model/client/clientDetails';
 
@@ -333,7 +333,29 @@ export default ({config, db}) =>{
  
             
 
+api.get('/rating/:cleanerID', (req, res)=> {
+   let result =  {};
+            let statusCode = 200;
+    Rating.find({cleaner: req.params.cleanerID})
+    .populate('client')
+    .exec((err, schedule)=>{
+                        if(err){
+                            statusCode = 400;
+                            result.statusCode = statusCode;
+                            result.error = err;
+                            res.status(statusCode).send(result);
+                        }else{
+                            // console.log(schedule[0].clientDetails.length);
+                            //console.log(Object.keys(schedule));
+                        
+                                 res.status(statusCode).send(schedule);
+                           
+                        }
 
+                });
+
+
+})
     
     return api;
 }

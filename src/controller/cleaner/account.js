@@ -241,15 +241,15 @@ export default ({config, db}) => {
 
                         // res.status(status).send(result);
                     } else {
-                        status = 400;
-                        result = error = 'Authentication error';
+                        status = 404;
+                        result.error = 'Incorrect email or password';
                         // res.status(status).send(result);
                     }
                     res.status(status).send(result);
                 }).catch( err=> {
                     status = 500;
                     result.status = status;
-                    result.error = err;
+                    result.error = err.message;
                     res.status(status).send(result);
                 });
             } else {

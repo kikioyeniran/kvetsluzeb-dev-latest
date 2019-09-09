@@ -6,9 +6,15 @@ import logger from 'morgan';
 import path from 'path';
 import expressValidator from 'express-validator';
 
+import fs from 'fs';
+
+if (!fs.existsSync(path.join(__dirname, 'public'))) {
+  fs.mkdirSync(path.join(__dirname, 'public'));
+  fs.mkdirSync(path.join(__dirname, 'public/uploads'))
+}
 
 
-const PORT = process.env.PORT
+const PORT =process.env.PORT
 // importing the config and routes folders
 import config from './config';
 import routes from './routes';
@@ -26,8 +32,8 @@ app.use(
 app.use(bodyParser.urlencoded({ extended: false }));
 
 // setting public folder
-app.use(express.static(path.join(__dirname, 'public')));
-console.log(path.join(__dirname, 'public'));
+app.use(express.static(path.join(__dirname, '../public')));
+console.log(path.join(__dirname, '../public'));
 // morgan logger
 app.use(logger('dev'));
 
@@ -57,6 +63,6 @@ app.use('/api/v1', routes);
 // app.server.listen(process.env.PORT);
 app.server.listen(PORT);
 // console.log(`started on port:${app.server.address().port}`);
-console.log(`started on port:8080`);
+console.log(`started on http://127.0.0.1:${PORT}`);
 
 export default app;

@@ -279,9 +279,9 @@ export default ({
             result.status = status;
             result.result = user;
           } else {
-            status = 401;
+            status = 404;
             result.status = status;
-            result.error = `Authentication error`;
+            result.error = `Incorrect email or password`;
           }
           res.status(status).send(result);;
         }).catch(err => {
@@ -426,7 +426,7 @@ export default ({
       if(!request[0]){
           result.status = 400;
                     result.request = null;
-                    res.status(400).send(result);
+                    res.status(200).send(result);
                     return
       }
            if (err) {
@@ -616,6 +616,8 @@ queryClean={
   // /api/v1/client/account/home/:id  --> working
   api.get('/home/:id', validateToken, (req, res) => {
     Client.findById(req.params.id, (err, client) => {
+
+      
       //console.log(client)
       var query = {
         clientID: client.clientID
