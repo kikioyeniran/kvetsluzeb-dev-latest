@@ -6,7 +6,7 @@ const Schema = mongoose.Schema;
 const RatingSchema = Schema({
 	cleaner :{
     type: mongoose.Schema.Types.ObjectId,
-        ref: 'cleaner_details',
+        ref: 'cleaner',
         autopopulate:true
     },
 

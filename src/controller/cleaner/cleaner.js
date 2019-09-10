@@ -343,6 +343,7 @@ api.get('/rating/:cleanerID', (req, res)=> {
                             statusCode = 400;
                             result.statusCode = statusCode;
                             result.error = err;
+                            console.log(err)
                             res.status(statusCode).send(result);
                         }else{
                             // console.log(schedule[0].clientDetails.length);
