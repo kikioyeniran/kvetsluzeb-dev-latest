@@ -141,7 +141,7 @@ export default ({
         if (access_type == 'key_hidden') {
           req.checkBody('keyHiddenPin', 'Key Hidden location is required').notEmpty();
         }
-        req.checkBody('schedule', 'Schedule is required').notEmpty();
+      // req.checkBody('schedule', 'Schedule is required').notEmpty();
         req.checkBody('fullname', 'Your Full Name  is not valid').notEmpty();
         req.checkBody('mobilenumber', 'Mobile Number is required').notEmpty();
         req.checkBody('address', 'Addresss is required').notEmpty();
