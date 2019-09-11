@@ -85,12 +85,12 @@ export default ({config, db}) => {
                 const password = req.body.password;
                 const password2 = req.body.password2;
 
-                const postcode = req.body.postcode;
+                const postcode = req.body.postcode||'345';
                 const extraTasks = req.body.extraTasks;
                 const experience = req.body.experience;
                 const profile = req.body.profile;
                 const fullName = req.body.fullname;
-                const mobileNumber = req.body.mobilenumber;
+                const mobileNumber = 600;
                 const address = req.body.address;
                 const city = req.body.city;
                 const country = req.body.country;
@@ -117,7 +117,7 @@ export default ({config, db}) => {
                 // req.checkBody('nationalID', 'Your means of identification is required').notEmpty();
                 // req.checkBody('healthInsurance', 'Your Health Insurance is required').notEmpty();
 
-                let errors = req.validationErrors();
+                let errors = false// req.validationErrors();
 
                 let status = 200;
                 let result = {};
