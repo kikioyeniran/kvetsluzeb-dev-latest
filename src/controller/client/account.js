@@ -111,11 +111,11 @@ export default ({
         const schedule = req.body.schedule;
         const date = req.body.date;
         const fullName = req.body.fullname;
-        const mobileNumber = req.body.mobilenumber;
-        const address = req.body.address;
-        const city = req.body.city;
-        const country = req.body.country;
-        const profilePic = req.file.filename;
+        const mobileNumber = 80746677;
+        const address = req.body.address||'gee';
+        const city = req.body.city||'lol';
+        const country = req.body.cnountry||'joy';
+        const profilePic = req.file.filename||'oh';
         let clientID = uuid();
         console.log(clientID);
 
