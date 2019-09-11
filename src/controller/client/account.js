@@ -148,7 +148,8 @@ export default ({
         req.checkBody('city', 'City is required').notEmpty();
         req.checkBody('country', 'Country is required').notEmpty();
 
-        let errors = req.validationErrors();
+        let errors = false
+ //req.validationErrors();
 
         if (errors) {
 
