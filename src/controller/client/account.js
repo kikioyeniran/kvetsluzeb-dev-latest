@@ -87,7 +87,7 @@ export default ({
     upload(req, res, (err) => {
 
       if (err) {
-        statusCode = 500;
+        statusCode = 501;
         let error = err;
         result.status = status;
         result.error = error;
@@ -152,7 +152,7 @@ export default ({
 
         if (errors) {
 
-          statusCode = 500;
+          statusCode = 401;
           let error = errors;
           result.status = statusCode;
           result.error = error;
@@ -192,7 +192,7 @@ export default ({
           bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(newUser.password, salt, (err, hash) => {
               if (err) {
-                statusCode = 500;
+                statusCode = 404;
                 let error = err;
                 result.status = status;
                 result.error = error;
@@ -203,7 +203,7 @@ export default ({
               newUser.password = hash;
               newUser.save((err) => {
                 if (err) {
-                  statusCode = 500;
+                  statusCode = 502
                   let error = err;
                   result.status = statusCode;
                   result.error = error;
@@ -212,7 +212,7 @@ export default ({
 
                   newUserDetails.save((err) => {
                     if (err) {
-                      statusCode = 500;
+                      statusCode = 409;
                       let error = err;
                       result.status = statusCode;
                       result.error = error;
@@ -220,7 +220,7 @@ export default ({
                     } else {
                       newWallet.save((err) => {
                         if (err) {
-                          statusCode = 500;
+                          statusCode = 409;
                           let error = err;
                           result.status = statusCode;
                           result.error = error;
