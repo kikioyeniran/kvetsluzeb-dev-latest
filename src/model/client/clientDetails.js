@@ -8,23 +8,23 @@ let ClientDetailsSchema = mongoose.Schema({
     },
     bedrooms:{
         type: Number,
-        required: true
+      
     },
     bathrooms:{
         type: Number,
-        required: true
+      
     },
     extraTasks:{
         type: Array,
-        required: true
+
     },
     dateFirstClean:{
         type: Date,
-        required: true
+     
     },
     cleaningHours:{
         type: Number,
-        required: true
+   
     },
     moreCleaningHours:{
         type: Number
@@ -34,7 +34,7 @@ let ClientDetailsSchema = mongoose.Schema({
     },
     apartmentAccess:{
         type: String,
-        required: true
+    
     },
     keyHiddenPin:{
         type: String
@@ -44,7 +44,7 @@ let ClientDetailsSchema = mongoose.Schema({
     },
     cleaningFrequency:{
         type: String,
-        required: true
+      
     },
     mobileNumber:{
         type: Number,

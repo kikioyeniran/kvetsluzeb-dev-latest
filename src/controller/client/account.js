@@ -126,21 +126,8 @@ export default ({
 
 
         req.checkBody('postcode', 'Postcode is required').notEmpty();
-        req.checkBody('bedrooms', 'Number of Bedrooms is required').notEmpty();
-        req.checkBody('bedrooms', 'Number of bedrooms must be a number').isNumeric();
-        req.checkBody('bathrooms', 'Number of bathrooms is required').notEmpty();
-        req.checkBody('bathrooms', 'Number of bathrooms mnust be a number').isNumeric();
-        req.checkBody('hours', 'Hours for cleaning is required').notEmpty();
-        if (more_hours == 'more') {
-          req.checkBody('more_hours', 'Extended Cleaning Hours is required').notEmpty();
-        }
-        req.checkBody('access_type', 'How cleaner would access your home cannot be empty').notEmpty();
-        if (access_type == 'key_safe') {
-          req.checkBody('keySafePin', 'Key Safe Pin is required').notEmpty();
-        }
-        if (access_type == 'key_hidden') {
-          req.checkBody('keyHiddenPin', 'Key Hidden location is required').notEmpty();
-        }
+      
+        
       // req.checkBody('schedule', 'Schedule is required').notEmpty();
         req.checkBody('fullname', 'Your Full Name  is not valid').notEmpty();
         req.checkBody('mobilenumber', 'Mobile Number is required').notEmpty();
@@ -167,17 +154,7 @@ export default ({
           });
           let newUserDetails = new ClientDetails({
             postcode: postcode,
-            bedrooms: bedrooms,
-            bathrooms: bathrooms,
-            extraTasks: extraTasks,
-            dateFirstClean: date,
-            cleaningHours: hours,
-            moreCleaningHours: more_hours,
-            cleaningPriority: priority,
-            apartmentAccess: access_type,
-            keyHiddenPin: keyHiddenPin,
-            keySafePin: keySafePin,
-            cleaningFrequency: schedule,
+          //         cleaningFrequency: schedule,
             mobileNumber: mobileNumber,
             address: address,
             fullName: fullName,

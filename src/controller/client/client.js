@@ -379,13 +379,13 @@ export default ({config, db}) => {
               currency: 'eur',
               customer: customer.id
             }))
-          .then(charge => res.render('client/success',{
+          .then(charge => res.json({
               clientID: req.body.clientID,
               clientName: req.body.clientName,
               cleanerID: req.body.cleanerID,
               cleanDate: req.body.cleanDate,
               totalPay: req.body.totalPay,
-              revisit: false
+              success: true
           })) //render the payment successful page
       });
 
