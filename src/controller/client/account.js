@@ -25,6 +25,8 @@ const mg = mailgun({
   host: 'api.eu.mailgun.net'
 });
 
+
+
 import Client from '../../model/client/client';
 import ClientDetails from '../../model/client/clientDetails';
 import ClientWallet from '../../model/client/clientWallet';
