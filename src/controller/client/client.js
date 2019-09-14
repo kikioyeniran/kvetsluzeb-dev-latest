@@ -369,15 +369,18 @@ export default ({config, db}) => {
 
         stripe.customers.create({
           email: req.body.stripeEmail, // customer email
-          source: req.body.stripeToken //token for the card
-        })
-        .then(customer =>
+        //token for the card
+        }).then((customer) => {
+    return stripe.customers.createSource(customer.id, {
+      source: 'tok_visa',
+    });
+  }).then(source =>
             stripe.charges.create({
               // charge the customer
               amount,
               description: 'Cleaning for a particular cleaner',
               currency: 'eur',
-              customer: customer.id
+              customer:source.customer,
             }))
           .then(charge => res.json({
               clientID: req.body.clientID,
