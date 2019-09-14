@@ -367,22 +367,40 @@ export default ({config, db}) => {
 
         let amount = req.body.totalPay * 100;
 
-        stripe.customers.create({
-          email: req.body.stripeEmail, // customer email
-        //token for the card
-        }).then((customer) => {
+  //       stripe.customers.create({
+  //         email: req.body.stripeEmail, // customer email
+  //       //token for the card
+  //       }).then((customer) => {
+  //   return stripe.customers.createSource(customer.id, {
+  //     source: 'tok_visa',
+  //   });
+  // }).then(source =>
+  //           stripe.charges.create({
+  //             // charge the customer
+  //             amount,
+  //             description: 'Cleaning for a particular cleaner',
+  //             currency: 'eur',
+  //             customer:source.customer,
+  //           }))
+
+  stripe.customers
+  .create({
+    email: 'foo-customer@example.com',
+  })
+  .then((customer) => {
+    console.log(customer)
     return stripe.customers.createSource(customer.id, {
       source: 'tok_visa',
     });
-  }).then(source =>
-            stripe.charges.create({
-              // charge the customer
-              amount,
-              description: 'Cleaning for a particular cleaner',
-              currency: 'eur',
-              customer:source.customer,
-            }))
-          .then(charge => res.json({
+  })
+  .then((source) => {
+        console.log(source)
+    return stripe.charges.create({
+      amount: 1600,
+      currency: 'usd',
+      customer: source.customer,
+    });
+  }).then(charge => res.json({
               clientID: req.body.clientID,
               clientName: req.body.clientName,
               cleanerID: req.body.cleanerID,
