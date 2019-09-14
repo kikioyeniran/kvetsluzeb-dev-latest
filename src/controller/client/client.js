@@ -365,10 +365,10 @@ export default ({config, db}) => {
 
     api.post('/pay', validateToken, (req, res)=>{
 
-        let amount = req.body.totalPay * 100;
+        let amount = req.body.totalPay? req.body.totalPay * 100: 50*100;
 
   //       stripe.customers.create({
-  //         email: req.body.stripeEmail, // customer email
+  //         email: , // customer email
   //       //token for the card
   //       }).then((customer) => {
   //   return stripe.customers.createSource(customer.id, {
@@ -385,7 +385,7 @@ export default ({config, db}) => {
 
   stripe.customers
   .create({
-    email: 'foo-customer@example.com',
+    email: req.body.stripeEmail||'allisonkosy@gmail.com',
   })
   .then((customer) => {
     console.log(customer)
@@ -396,7 +396,7 @@ export default ({config, db}) => {
   .then((source) => {
         console.log(source)
     return stripe.charges.create({
-      amount: 1600,
+      amount: amount,
       currency: 'usd',
       customer: source.customer,
     });
