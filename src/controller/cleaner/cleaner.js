@@ -143,12 +143,12 @@ export default ({config, db}) =>{
         let statusCode = 200;
         let wallet = {};
         wallet.acctName = req.body.acctName;
-        wallet.bank = req.body.bank;
-        wallet.acctNumber = req.body.acctNumber;
+        wallet.swiftCode = req.body.swiftCode;
+        wallet.IBAN = req.body.IBAN;
 
         let query = {cleanerID : req.params.cleanerID}
 
-        CleanerWallet.updateOne(query, (err, wallet) =>{
+        CleanerWallet.updateOne(query, wallet, (err, wallet) =>{
             let result = {};
             let statusCode = 200;
             if(err){

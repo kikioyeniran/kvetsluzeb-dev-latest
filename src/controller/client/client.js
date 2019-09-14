@@ -397,7 +397,7 @@ export default ({config, db}) => {
         console.log(source)
     return stripe.charges.create({
       amount: amount,
-      currency: 'usd',
+      currency: 'eur',
       customer: source.customer,
     });
   }).then(charge => res.json({
