@@ -116,7 +116,7 @@ export default ({
         const mobileNumber =req.body.mobilenumber? req.body.mobilenumber.replace('+', ''): 600;
         const address = req.body.address||'gee';
         const city = req.body.city||'lol';
-        const country = req.body.cnountry||'joy';
+        const country = req.body.country||'joy';
         const profilePic = req.file.filename||'oh';
         let clientID = uuid();
         console.log(clientID);
