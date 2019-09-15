@@ -445,8 +445,9 @@ export default ({config, db}) => {
                             return
                         }
                         let {reviews, rating} = dets;
-                        reviews+=1;
-                        rating= parseFloat(((rating+req.body.rating)/reviews).toFixed(1));
+                       
+                        rating= parseFloat((((rating*reviews)+req.body.rating)/(reviews+1)).toFixed(1));
+                         reviews+=1;
                         dets.rating=rating;
                         dets.reviews=reviews
 
@@ -506,7 +507,7 @@ export default ({config, db}) => {
             }).exec(
             (err, reviews)=> {
 
-
+console.log(reviews)
                if(err){
                             statusCode = 500;
                             result.statusCode = statusCode;
