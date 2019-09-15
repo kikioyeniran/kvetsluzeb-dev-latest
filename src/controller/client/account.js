@@ -666,7 +666,7 @@ queryClean={
           }
 
 if(clientWallet.pendingPay[0].cleanerID){
-  Cleaner.findById(clientWallet.pendingPay[0].cleanerID , (err, clieaner) => {
+  Cleaner.findById(clientWallet.pendingPay[0].cleanerID , (err, cleaner) => {
 
 
              if (err) {
@@ -677,7 +677,7 @@ if(clientWallet.pendingPay[0].cleanerID){
       }
 
   CleanerDetails.findOne({
-   cleanerID: clieaner.cleanerID
+   cleanerID: cleaner.cleanerID
   },  (err, clieanerDetails) => {
 
 //console.log(result.wallet.pendingPay)
@@ -692,18 +692,20 @@ if(clientWallet.pendingPay[0].cleanerID){
 
    result.statusCode = statusCode;
           result.user = client;
-          result.wallet = clientWallet;
+    
           result.costStatus = costStatus;
           result.pending = pending;
           result.stripeKey = uuid()
           result.userDetails = client_details[0];
-          result.wallet.cleaner = {
-            ...clieaner,
+          result.wallet= {
+
+            ...cleaner,
+                   ... clientWallet,
             fullName, mobileNumber
 
           }
           // result.wallet = wallet;
-          console.log(result.wallet.cleaner)
+          console.log(result.wallet)
           result.StripePublishableKey =uuid();
           res.status(statusCode).send(result);
 
