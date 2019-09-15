@@ -688,7 +688,7 @@ if(clientWallet.pendingPay[0].cleanerID){
         return
       }
 
-    let {fullName, mobileNumber} = clieanerDetails;
+    let {fullName, mobileNumber} = {fullName:'gg', mobileNumber:'pp'};
 
    result.statusCode = statusCode;
           result.user = client;
