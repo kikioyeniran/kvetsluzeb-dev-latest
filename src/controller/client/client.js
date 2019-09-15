@@ -514,7 +514,7 @@ export default ({config, db}) => {
                             res.status(statusCode).send(result);
                             return
                         }
-                result.status(statusCode).json(reviews)
+                res.status(statusCode).json(reviews)
 
             })
         })
