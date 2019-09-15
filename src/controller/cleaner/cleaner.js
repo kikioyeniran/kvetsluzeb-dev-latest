@@ -11,11 +11,11 @@ import Rating from '../../model/Rating';
 //Bring in Client Model
 import ClientDetails from '../../model/client/clientDetails';
 
-//Bring in Client Wallet Model
-import ClientWallet from '../../model/client/clientWallet';
+//Bring in Client Walvar Model
+import ClientWalvar from '../../model/client/clientWalvar';
 
-//Bring in Cleaner Wallet Model
-import CleanerWallet from '../../model/cleaner/cleanerWallet';
+//Bring in Cleaner Walvar Model
+import CleanerWalvar from '../../model/cleaner/cleanerWalvar';
 
 //Bring in Cleaning Schedule Model
 import CleaningSchedule from '../../model/cleaningSchedule';
@@ -25,18 +25,18 @@ import Requests from '../../model/booking/requests';
 
 
 export default ({config, db}) =>{
-    let api = Router();
+    var api = Router();
 
 
     // **********************************************
     // ******* CLEANER PAYMENT REQUESTS *************
     // **********************************************
     api.get('/:scheduleID/:cleanerID/:clientID', (req,res)=>{
-        let scheduleID = req.params.scheduleID;
-        let cleanerID = req.params.cleanerID;
-        let clientID = req.params.clientID;
-        let result = {};
-        let statusCode = 200;
+        var scheduleID = req.params.scheduleID;
+        var cleanerID = req.params.cleanerID;
+        var clientID = req.params.clientID;
+        var result = {};
+        var statusCode = 200;
 
         CleaningSchedule.findById(scheduleID, (err, schedule)=>{
             if(err){
@@ -46,16 +46,16 @@ export default ({config, db}) =>{
                 // console.log(err)
             }
             else{
-            let paymentUpdate = {};
-            let totalCharge = schedule.totalCharge;
-            let cleanerIncome = schedule.cleanerIncome;
-            let dblastClean = schedule.lastClean[0];
-            let dbcurrentClean = schedule.currentClean[0];
-            let increment = schedule.currentClean[0].increment;
-            let newCurrentDate = schedule.currentClean[0].nextCleanDate;
-              let nextCleanDate = new Date().setDate(newCurrentDate.getDate() + increment);
-            let nextCleanDate = new Date(nextCleanDate);
-            let done = false
+            var paymentUpdate = {};
+            var totalCharge = schedule.totalCharge;
+            var cleanerIncome = schedule.cleanerIncome;
+            var dblastClean = schedule.lastClean[0];
+            var dbcurrentClean = schedule.currentClean[0];
+            var increment = schedule.currentClean[0].increment;
+            var newCurrentDate = schedule.currentClean[0].nextCleanDate;
+              var nextCleanDate = new Date().setDate(newCurrentDate.getDate() + increment);
+            var nextCleanDate = new Date(nextCleanDate);
+            var done = false
             if (increment === 0){
                 done = true;
             }
@@ -63,13 +63,13 @@ export default ({config, db}) =>{
           
             //console.log(dbcurrentClean.currentCleanDate);
             // console.log(newCurrentDate, ' ', nextCleanDate);
-            let lastClean = [{
+            var lastClean = [{
                 cleanStatus : true,
                 paidStatus : false,
                 cancelStatus : true,
                 lastCleanDate  : dbcurrentClean.currentCleanDate
             }];
-            let currentClean = [{
+            var currentClean = [{
                     cleanStatus : true,
                     paidStatus : false,
                     cancelStatus : true,
@@ -81,9 +81,9 @@ export default ({config, db}) =>{
             paymentUpdate.lastClean = lastClean;
             paymentUpdate.currentClean = currentClean;
             paymentUpdate.done = done;
-            let newLastCleanDate = dbcurrentClean.currentCleanDate;
+            var newLastCleanDate = dbcurrentClean.currentCleanDate;
             console.log(newLastCleanDate);
-            let query = {_id: scheduleID};
+            var query = {_id: scheduleID};
             CleaningSchedule.updateOne(query, paymentUpdate, (err) =>{
                     if(err){
                         console.log(err);
@@ -94,37 +94,37 @@ export default ({config, db}) =>{
                         return;
                     }else {
                         //console.log('Schedule Updated');
-                        let queryWallet = {cleanerID : req.params.cleanerID}
+                        var queryWalvar = {cleanerID : req.params.cleanerID}
                         Cleaner.findById(req.params.cleanerID, (err, cleaner)=>{
-                            let CleanSpecID = cleaner.cleanerID;
+                            var CleanSpecID = cleaner.cleanerID;
                             // console.log(CleanSpecID);
-                            let queryWallet2 = {cleanerID: CleanSpecID}
-                            CleanerWallet.findOne((queryWallet2), (err, walletFound)=>{
-                                let wallet = {};
-                                wallet.totalIncome = totalCharge + walletFound. totalIncome;
-                                wallet.expectedIncome = totalCharge;
-                                CleanerWallet.updateOne(queryWallet, wallet, (err) =>{
+                            var queryWalvar2 = {cleanerID: CleanSpecID}
+                            CleanerWalvar.findOne((queryWalvar2), (err, walvarFound)=>{
+                                var walvar = {};
+                                walvar.totalIncome = totalCharge + walvarFound. totalIncome;
+                                walvar.expectedIncome = totalCharge;
+                                CleanerWalvar.updateOne(queryWalvar, walvar, (err) =>{
                                     //console.log(clientID);
-                                    let clientQuery = {clientID: clientID}
-                                    ClientWallet.findOne((clientQuery),(err, clientFound)=>{
-                                        let clientWallet = {};
-                                        let pendingPay = {
+                                    var clientQuery = {clientID: clientID}
+                                    ClientWalvar.findOne((clientQuery),(err, clientFound)=>{
+                                        var clientWalvar = {};
+                                        var pendingPay = {
                                             cleanDate: newLastCleanDate,
                                             cleanerID: cleanerID,
                                             cost: totalCharge,
                                             CleanSpecID
                                         }
-                                        clientWallet.totalPaid = totalCharge + clientFound.totalPaid;
-                                        clientWallet.pendingPay = pendingPay;
-                                        ClientWallet.updateOne(clientQuery, clientWallet,(err)=>{
+                                        clientWalvar.totalPaid = totalCharge + clientFound.totalPaid;
+                                        clientWalvar.pendingPay = pendingPay;
+                                        ClientWalvar.updateOne(clientQuery, clientWalvar,(err)=>{
                                             if(err){
                                                 result.error = err;
                                                 result.statusCode = 404;
                                                 res.status(statusCode).send(result);
                                             }else {
-                                                //console.log('wallet found and updated');
+                                                //console.log('walvar found and updated');
                                                 //req.flash('success', 'Account Updated');
-                                                let message = 'Successful please redirect to User dashboard'
+                                                var message = 'Successful please redirect to User dashboard'
 
                                                 result.error = err;
                                                 result.statusCode = statusCode;
@@ -148,34 +148,34 @@ export default ({config, db}) =>{
     // **********************************************
     // ******* CLEANER WALLET DETAILS ***************
     // **********************************************
-    // For Editing the cleaner wallet details on the dahboard
-    api.post('/wallet/:cleanerID', validateToken, (req, res) =>{
+    // For Editing the cleaner walvar details on the dahboard
+    api.post('/walvar/:cleanerID', validateToken, (req, res) =>{
         //console.log('code is here');
-        let result = {};
-        let statusCode = 200;
-        let wallet = {};
-        wallet.acctName = req.body.acctName;
-        wallet.swiftCode = req.body.swiftCode;
-        wallet.IBAN = req.body.IBAN;
+        var result = {};
+        var statusCode = 200;
+        var walvar = {};
+        walvar.acctName = req.body.acctName;
+        walvar.swiftCode = req.body.swiftCode;
+        walvar.IBAN = req.body.IBAN;
 
-        let query = {cleanerID : req.params.cleanerID}
+        var query = {cleanerID : req.params.cleanerID}
 
-        CleanerWallet.updateOne(query, wallet, (err, wallet) =>{
-            let result = {};
-            let statusCode = 200;
+        CleanerWalvar.updateOne(query, walvar, (err, walvar) =>{
+            var result = {};
+            var statusCode = 200;
             if(err){
                 statusCode = 500;
                 result.status = statusCode;
                 result.error = err;
                 res.status(statusCode).send(result);
             }else {
-                // console.log('wallet and updated');
-                let message = 'Wallet update Successful';
+                // console.log('walvar and updated');
+                var message = 'Walvar update Successful';
                 result.message = message ;
                 result.status = statusCode;
                 res.status(statusCode).send(result);
                 //req.flash('success', 'Account Updated');
-                // res.redirect('/cleaner/dashboard/wallet/'+req.params.id);
+                // res.redirect('/cleaner/dashboard/walvar/'+req.params.id);
             }
         });
     });
@@ -183,18 +183,18 @@ export default ({config, db}) =>{
   //Edit Request and create schedule Process done
   api.get('/confirm/:clientID/:cleanerID/:requestID', (req, res) =>{
    
-    let clientID = req.params.clientID;
-    let cleanerID = req.params.cleanerID;
-    let requestID = req.params.requestID;
-    let result = {};
-    let statusCode = 200;
+    var clientID = req.params.clientID;
+    var cleanerID = req.params.cleanerID;
+    var requestID = req.params.requestID;
+    var result = {};
+    var statusCode = 200;
 
 
-    let request = {};
+    var request = {};
     request.status = true;
     request.confirmedCleanerID = cleanerID;
     request
-    let query = {_id : requestID};
+    var query = {_id : requestID};
     Requests.updateOne(query, request, (err) =>{
         if(err){
             result.error = err;
@@ -204,7 +204,7 @@ export default ({config, db}) =>{
         }else {
                 // console.log('found and upda
             //req.flash('success', 'Account Updated');
-           let query2 = {_id: requestID}
+           var query2 = {_id: requestID}
 
             Requests.find((query2), (err, clientRequest)=>{
                   //  console.log(clientRequest, query2)
@@ -212,30 +212,30 @@ export default ({config, db}) =>{
                     console.log(err)
                 }else {
                     //console.log(clientRequest[0].cleanerID)
-                    let dateFirstClean = clientRequest[0].dateFirstClean;
+                    var dateFirstClean = clientRequest[0].dateFirstClean;
 
-                    let frequency = clientRequest[0].frequency;
-                    let increment = 0;
+                    var frequency = clientRequest[0].frequency;
+                    var increment = 0;
 
                     if(frequency == "weekly"){
-                        let nextCleanDate = new Date().setDate(dateFirstClean.getDate() + 7);
-                        let nextCleanDate = new Date(nextCleanDate);
-                        let followingDate = new Date().setDate(nextCleanDate.getDate() + 7);
-                        let followingDate = new Date(followingDate);
-                        let increment = 7;
+                        var nextCleanDate = new Date().setDate(dateFirstClean.getDate() + 7);
+                        var nextCleanDate = new Date(nextCleanDate);
+                        var followingDate = new Date().setDate(nextCleanDate.getDate() + 7);
+                        var followingDate = new Date(followingDate);
+                        var increment = 7;
                         //console.log(nextCleanDate);
                     }
                     if(frequency == "fortnightly"){
-                        let nextCleanDate = new Date().setDate(dateFirstClean.getDate() + 14);
-                        let nextCleanDate = new Date(nextCleanDate);
-                        let followingDate = new Date().setDate(nextCleanDate.getDate() + 14);
-                        let followingDate = new Date(followingDate);
-                        let increment = 14;
+                        var nextCleanDate = new Date().setDate(dateFirstClean.getDate() + 14);
+                        var nextCleanDate = new Date(nextCleanDate);
+                        var followingDate = new Date().setDate(nextCleanDate.getDate() + 14);
+                        var followingDate = new Date(followingDate);
+                        var increment = 14;
                         //console.log(nextCleanDate);
                     }
                     if(frequency == "one-off"){
-                        let nextCleanDate = new Date(dateFirstClean);
-                        let increment = 0;
+                        var nextCleanDate = new Date(dateFirstClean);
+                        var increment = 0;
                         //console.log(nextCleanDate);
                     }
                     Cleaner.findById(cleanerID, (err, cleanerDetail)=>{
@@ -243,28 +243,28 @@ export default ({config, db}) =>{
                         //console.log(cleanerDetail.cleanerID);
                         query = {cleanerID: cleanerDetail.cleanerID}
                         CleanerDetails.findOne((query), (err, newCleaner)=>{
-                            let cleanerCharge = newCleaner.income;
-                            let hours = clientRequest[0].hours
+                            var cleanerCharge = newCleaner.income;
+                            var hours = clientRequest[0].hours
                             if(hours == "more"){
-                                let hourCost = parseFloat(client.Request[0].moreHours);
+                                var hourCost = parseFloat(client.Request[0].moreHours);
                             }else{
-                                let hourCost = parseFloat(clientRequest[0].hours);
+                                var hourCost = parseFloat(clientRequest[0].hours);
                             }
-                            let extraTasks = /,/.test(clientRequest[0].extraTasks[0])?clientRequest[0].extraTasks[0]:clientRequest[0].extraTasks ;
-                            let result =Array.isArray(extraTasks)? extraTasks: extraTasks.split(",");
-                            let extraTaskCost = result.length;
+                            var extraTasks = /,/.test(clientRequest[0].extraTasks[0])?clientRequest[0].extraTasks[0]:clientRequest[0].extraTasks ;
+                            var result =Array.isArray(extraTasks)? extraTasks: extraTasks.split(",");
+                            var extraTaskCost = result.length;
                             if(extraTaskCost <=2){
                                 hourCost = hourCost + 0.5;
                             }
                             if(extraTaskCost >2){
                                 hourCost = hourCost + 1;
                             }
-                            let cleanerIncome = newCleaner.income * hourCost;
+                            var cleanerIncome = newCleaner.income * hourCost;
                             query2 = {clientID: req.params.clientID};
                             ClientDetails.findOne((query2) , (err, clientDetails)=>{
                                 //console.log(req.params.clientID, ' + ', clientDetails);
-                                let clientID = clientDetails._id
-                                let newSchedule = new CleaningSchedule({
+                                var clientID = clientDetails._id
+                                var newSchedule = new CleaningSchedule({
                                     clientDetails: clientID,
                                     clientName: clientDetails.clientName,
                                     cleanerID: cleanerID,
@@ -289,7 +289,7 @@ export default ({config, db}) =>{
                                         res.status(statusCode).send(err.message);
                                         return
                                     }else{
-                                        let message = 'Cleaning Request Accepted'
+                                        var message = 'Cleaning Request Accepted'
                                         result.message = message ;
                                         result.statusCode = 200;
                                         console.log( newSchedule)
@@ -319,10 +319,10 @@ export default ({config, db}) =>{
  api.get('/cleaner-schedule/:id', validateToken, (req, res) =>{
         
             //console.log(req.params.id);
-            let result =  {};
-            let statusCode = 200;
+            var result =  {};
+            var statusCode = 200;
           
-                let query2 = {_id: req.params.id};
+                var query2 = {_id: req.params.id};
                 CleaningSchedule
                     .findOne(query2)
                     .populate('clientDetails')
@@ -346,8 +346,8 @@ export default ({config, db}) =>{
             
 
 api.get('/rating/:cleanerID', (req, res)=> {
-   let result =  {};
-            let statusCode = 200;
+   var result =  {};
+            var statusCode = 200;
     Rating.find({cleaner: req.params.cleanerID})
     .populate('client')
     .exec((err, schedule)=>{
