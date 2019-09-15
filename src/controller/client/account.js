@@ -675,7 +675,7 @@ if(clientWallet.pendingPay[0].cleanerID){
         res.status(statusCode).send(result);
         return
       }
-
+console.log(clieaner)
   CleanerDetails.findOne({
     cleanerID: clieaner.cleanerID
   },  (err, clieanerDetails) => {
