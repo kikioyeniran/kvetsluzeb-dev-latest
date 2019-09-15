@@ -697,12 +697,13 @@ if(clientWallet.pendingPay[0].cleanerID){
           result.pending = pending;
           result.stripeKey = uuid()
           result.userDetails = client_details[0];
-          result.wallet.pendingPay[0].cleaner = {
+          result.wallet.cleaner = {
+            ...clieaner,
             fullName, mobileNumber
 
           }
           // result.wallet = wallet;
-          console.log(result.wallet.pendingPay)
+          console.log(result.wallet.cleaner)
           result.StripePublishableKey =uuid();
           res.status(statusCode).send(result);
 
