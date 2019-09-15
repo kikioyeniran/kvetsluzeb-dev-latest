@@ -698,9 +698,11 @@ if(clientWallet.pendingPay[0].cleanerID){
           result.stripeKey = uuid()
           result.userDetails = client_details[0];
           result.wallet= {
+            
 
             ...cleaner,
                    ... clientWallet,
+
             fullName, mobileNumber
 
           }
