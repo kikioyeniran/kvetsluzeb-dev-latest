@@ -649,7 +649,33 @@ queryClean={
             console.log('pending pay is not empty ', clientWallet.pendingPay[0].cost, ' ', costStatus)
           }
 
+if(clientWallet.pendingPay[0].cleanerID){
+  CleanerDetails.findOne({
+    cleanerID: clientWallet.pendingPay[0].cleanerID
+  },  (err, clieanerDetails) => {
 
+    let {fullName, mobileNumber} = clieanerDetails;
+
+   result.statusCode = statusCode;
+          result.user = client;
+          result.wallet = clientWallet;
+          result.costStatus = costStatus;
+          result.pending = pending;
+          result.stripeKey = uuid()
+          result.userDetails = client_details[0];
+          result.wallet.pendingPay[0].cleaner = {
+            fullName, mobileNumber
+
+          }
+          // result.wallet = wallet;
+          result.StripePublishableKey =uuid();
+          res.status(statusCode).send(result);
+
+          return
+
+  })
+  }
+  else {
 
           result.statusCode = statusCode;
           result.user = client;
@@ -661,6 +687,7 @@ queryClean={
           // result.wallet = wallet;
           result.StripePublishableKey =uuid();
           res.status(statusCode).send(result);
+        }
         })
       });
     });

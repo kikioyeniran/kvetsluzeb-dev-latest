@@ -47,23 +47,29 @@ export default ({config, db}) =>{
             }
             else{
             let paymentUpdate = {};
-            var totalCharge = schedule.totalCharge;
-            var cleanerIncome = schedule.cleanerIncome;
-            var dblastClean = schedule.lastClean[0];
-            var dbcurrentClean = schedule.currentClean[0];
-            var increment = schedule.currentClean[0].increment;
-            var newCurrentDate = schedule.currentClean[0].nextCleanDate;
-            var nextCleanDate = new Date().setDate(newCurrentDate.getDate() + increment);
-            var nextCleanDate = new Date(nextCleanDate);
+            let totalCharge = schedule.totalCharge;
+            let cleanerIncome = schedule.cleanerIncome;
+            let dblastClean = schedule.lastClean[0];
+            let dbcurrentClean = schedule.currentClean[0];
+            let increment = schedule.currentClean[0].increment;
+            let newCurrentDate = schedule.currentClean[0].nextCleanDate;
+              let nextCleanDate = new Date().setDate(newCurrentDate.getDate() + increment);
+            let nextCleanDate = new Date(nextCleanDate);
+            let done = false
+            if (increment === 0){
+                done = true;
+            }
+          
+          
             //console.log(dbcurrentClean.currentCleanDate);
             // console.log(newCurrentDate, ' ', nextCleanDate);
-            var lastClean = [{
+            let lastClean = [{
                 cleanStatus : true,
                 paidStatus : false,
                 cancelStatus : true,
                 lastCleanDate  : dbcurrentClean.currentCleanDate
             }];
-            var currentClean = [{
+            let currentClean = [{
                     cleanStatus : true,
                     paidStatus : false,
                     cancelStatus : true,
@@ -74,18 +80,23 @@ export default ({config, db}) =>{
             //console.log(lastClean, ' ', currentClean);
             paymentUpdate.lastClean = lastClean;
             paymentUpdate.currentClean = currentClean;
-            var newLastCleanDate = dbcurrentClean.currentCleanDate;
+            paymentUpdate.done = done;
+            let newLastCleanDate = dbcurrentClean.currentCleanDate;
             console.log(newLastCleanDate);
-            var query = {_id: scheduleID};
+            let query = {_id: scheduleID};
             CleaningSchedule.updateOne(query, paymentUpdate, (err) =>{
                     if(err){
                         console.log(err);
+                        res.status(500).json({
+                            error: true,
+                            message: err.message
+                        })
                         return;
                     }else {
                         //console.log('Schedule Updated');
                         let queryWallet = {cleanerID : req.params.cleanerID}
                         Cleaner.findById(req.params.cleanerID, (err, cleaner)=>{
-                            var CleanSpecID = cleaner.cleanerID;
+                            let CleanSpecID = cleaner.cleanerID;
                             // console.log(CleanSpecID);
                             let queryWallet2 = {cleanerID: CleanSpecID}
                             CleanerWallet.findOne((queryWallet2), (err, walletFound)=>{
@@ -97,7 +108,7 @@ export default ({config, db}) =>{
                                     let clientQuery = {clientID: clientID}
                                     ClientWallet.findOne((clientQuery),(err, clientFound)=>{
                                         let clientWallet = {};
-                                        var pendingPay = {
+                                        let pendingPay = {
                                             cleanDate: newLastCleanDate,
                                             cleanerID: cleanerID,
                                             cost: totalCharge
@@ -200,30 +211,30 @@ export default ({config, db}) =>{
                     console.log(err)
                 }else {
                     //console.log(clientRequest[0].cleanerID)
-                    var dateFirstClean = clientRequest[0].dateFirstClean;
+                    let dateFirstClean = clientRequest[0].dateFirstClean;
 
-                    var frequency = clientRequest[0].frequency;
-                    var increment = 0;
+                    let frequency = clientRequest[0].frequency;
+                    let increment = 0;
 
                     if(frequency == "weekly"){
-                        var nextCleanDate = new Date().setDate(dateFirstClean.getDate() + 7);
-                        var nextCleanDate = new Date(nextCleanDate);
-                        var followingDate = new Date().setDate(nextCleanDate.getDate() + 7);
-                        var followingDate = new Date(followingDate);
-                        var increment = 7;
+                        let nextCleanDate = new Date().setDate(dateFirstClean.getDate() + 7);
+                        let nextCleanDate = new Date(nextCleanDate);
+                        let followingDate = new Date().setDate(nextCleanDate.getDate() + 7);
+                        let followingDate = new Date(followingDate);
+                        let increment = 7;
                         //console.log(nextCleanDate);
                     }
                     if(frequency == "fortnightly"){
-                        var nextCleanDate = new Date().setDate(dateFirstClean.getDate() + 14);
-                        var nextCleanDate = new Date(nextCleanDate);
-                        var followingDate = new Date().setDate(nextCleanDate.getDate() + 14);
-                        var followingDate = new Date(followingDate);
-                        var increment = 14;
+                        let nextCleanDate = new Date().setDate(dateFirstClean.getDate() + 14);
+                        let nextCleanDate = new Date(nextCleanDate);
+                        let followingDate = new Date().setDate(nextCleanDate.getDate() + 14);
+                        let followingDate = new Date(followingDate);
+                        let increment = 14;
                         //console.log(nextCleanDate);
                     }
                     if(frequency == "one-off"){
-                        var nextCleanDate = new Date(dateFirstClean);
-                        var increment = 0;
+                        let nextCleanDate = new Date(dateFirstClean);
+                        let increment = 0;
                         //console.log(nextCleanDate);
                     }
                     Cleaner.findById(cleanerID, (err, cleanerDetail)=>{
@@ -231,27 +242,27 @@ export default ({config, db}) =>{
                         //console.log(cleanerDetail.cleanerID);
                         query = {cleanerID: cleanerDetail.cleanerID}
                         CleanerDetails.findOne((query), (err, newCleaner)=>{
-                            var cleanerCharge = newCleaner.income;
-                            var hours = clientRequest[0].hours
+                            let cleanerCharge = newCleaner.income;
+                            let hours = clientRequest[0].hours
                             if(hours == "more"){
-                                var hourCost = parseFloat(client.Request[0].moreHours);
+                                let hourCost = parseFloat(client.Request[0].moreHours);
                             }else{
-                                var hourCost = parseFloat(clientRequest[0].hours);
+                                let hourCost = parseFloat(clientRequest[0].hours);
                             }
-                            var extraTasks = /,/.test(clientRequest[0].extraTasks[0])?clientRequest[0].extraTasks[0]:clientRequest[0].extraTasks ;
-                            var result =Array.isArray(extraTasks)? extraTasks: extraTasks.split(",");
-                            var extraTaskCost = result.length;
+                            let extraTasks = /,/.test(clientRequest[0].extraTasks[0])?clientRequest[0].extraTasks[0]:clientRequest[0].extraTasks ;
+                            let result =Array.isArray(extraTasks)? extraTasks: extraTasks.split(",");
+                            let extraTaskCost = result.length;
                             if(extraTaskCost <=2){
                                 hourCost = hourCost + 0.5;
                             }
                             if(extraTaskCost >2){
                                 hourCost = hourCost + 1;
                             }
-                            var cleanerIncome = newCleaner.income * hourCost;
+                            let cleanerIncome = newCleaner.income * hourCost;
                             query2 = {clientID: req.params.clientID};
                             ClientDetails.findOne((query2) , (err, clientDetails)=>{
                                 //console.log(req.params.clientID, ' + ', clientDetails);
-                                var clientID = clientDetails._id
+                                let clientID = clientDetails._id
                                 let newSchedule = new CleaningSchedule({
                                     clientDetails: clientID,
                                     clientName: clientDetails.clientName,

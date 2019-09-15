@@ -86,6 +86,11 @@ let CleaningScheduleSchema = mongoose.Schema({
         type: Date,
         default: Date.now
     }
+    done: {
+        type: Boolean,
+        default: false
+    }
 });
+
 CleaningScheduleSchema.plugin(require('mongoose-autopopulate'))
 let CleaningSchedule = module.exports = mongoose.model('cleaningSchedule', CleaningScheduleSchema);
