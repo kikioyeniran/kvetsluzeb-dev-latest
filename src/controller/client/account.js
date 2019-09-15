@@ -716,7 +716,7 @@ if(clientWallet.pendingPay[0].cleanerID){
           result.userDetails = client_details[0];
           result.transactions = transactions
           result.transactionStatus = noTransaction;
-          console.log(transactions,result);
+         // console.log(transactions,result);
           res.status(statusCode).send(result);
        
 
