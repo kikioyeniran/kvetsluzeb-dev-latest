@@ -675,12 +675,12 @@ if(clientWallet.pendingPay[0].cleanerID){
         res.status(statusCode).send(result);
         return
       }
-console.log(clieaner)
+
   CleanerDetails.findOne({
-    cleanerID: clieaner.cleanerID
+   cleanerID: clieaner.cleanerID
   },  (err, clieanerDetails) => {
 
-
+console.log(clieaner, clieanerDetails)
              if (err) {
         result.statusCode = 401;
         result.error = err.message;
