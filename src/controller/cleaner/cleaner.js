@@ -108,12 +108,18 @@ export default ({config, db}) =>{
                                     //console.log(clientID);
                                     var clientQuery = {clientID: clientID}
                                     ClientWallet.findOne((clientQuery),(err, clientFound)=>{
-                                        var clientWallet = {};
+                                        CleanerDetails.findOne({
+                                            cleanerID: CleanSpecID
+                                        }).exec((err, cl)=> {
+
+
+
+    var clientWallet = {};
                                         var pendingPay = {
                                             cleanDate: newLastCleanDate,
                                             cleanerID: cleanerID,
                                             cost: totalCharge,
-                                            CleanSpecID
+                                            cleaner: cl
                                         }
                                         clientWallet.totalPaid = totalCharge + clientFound.totalPaid;
                                         clientWallet.pendingPay = pendingPay;
@@ -135,6 +141,9 @@ export default ({config, db}) =>{
                                             }
                                         })
                                     })
+
+                                        })
+                                    
                                 });
                             })
                         })

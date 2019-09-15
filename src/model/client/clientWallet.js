@@ -24,9 +24,9 @@ const ClientWalletSchema = mongoose.Schema({
                 default: false
             },
 
-            CleanSpecID:{
-                type:  String,
-                default: ""
+            cleaner:{
+                type:  Object,
+                default: {}
             }
         }
     ],

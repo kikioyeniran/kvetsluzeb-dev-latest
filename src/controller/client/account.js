@@ -630,24 +630,8 @@ queryClean={
         clientID: client.clientID
       };
       ClientDetails.find((query), (err, client_details) => {
-           if (err) {
-        result.statusCode = 401;
-        result.error = err.message;
-        res.status(statusCode).send(result);
-        return
-      }
         //console.log(client_details[0]);
         ClientWallet.findOne((query), (err, clientWallet) => {
-
-                   if (err) {
-        result.statusCode = 401;
-        result.error = err.message;
-        res.status(statusCode).send(result);
-        return
-      }
-
-
-
           var pending;
           var costStatus = false;
           if (empty(clientWallet.pendingPay)) {
@@ -665,61 +649,8 @@ queryClean={
             console.log('pending pay is not empty ', clientWallet.pendingPay[0].cost, ' ', costStatus)
           }
 
-if(clientWallet.pendingPay[0].cleanerID){
-  Cleaner.findById(clientWallet.pendingPay[0].cleanerID , (err, cleaner) => {
 
-
-             if (err) {
-        result.statusCode = 401;
-        result.error = err.message;
-        res.status(statusCode).send(result);
-        return
-      }
-
-  CleanerDetails.findOne({
-   cleanerID: cleaner.cleanerID
-  },  (err, clieanerDetails) => {
-
-//console.log(result.wallet.pendingPay)
-             if (err) {
-        result.statusCode = 401;
-        result.error = err.message;
-        res.status(statusCode).send(result);
-        return
-      }
-
-    let {fullName, mobileNumber} = clieanerDetails
-
-   result.statusCode = statusCode;
-          result.user = client;
-    
-          result.costStatus = costStatus;
-          result.pending = pending;
-          result.stripeKey = uuid()
-          result.userDetails = client_details[0];
-          result.wallet= {
-
-
-            ...cleaner,
-                   ...clientWallet,
-
-            fullName, mobileNumber
-
-          }
-          // result.wallet = wallet;
-          console.log(result.wallet)
-          result.StripePublishableKey =uuid();
-          res.status(statusCode).send(result);
-
-          return
-
-  })
-
-
-  })
-
-  }
-  else {
+-
 
           result.statusCode = statusCode;
           result.user = client;
@@ -731,8 +662,7 @@ if(clientWallet.pendingPay[0].cleanerID){
           // result.wallet = wallet;
           result.StripePublishableKey =uuid();
           res.status(statusCode).send(result);
-        }
-        })
+              })
       });
     });
   });
