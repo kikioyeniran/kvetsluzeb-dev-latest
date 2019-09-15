@@ -630,8 +630,24 @@ queryClean={
         clientID: client.clientID
       };
       ClientDetails.find((query), (err, client_details) => {
+           if (err) {
+        result.statusCode = 401;
+        result.error = err.message;
+        res.status(statusCode).send(result);
+        return
+      }
         //console.log(client_details[0]);
         ClientWallet.findOne((query), (err, clientWallet) => {
+
+                   if (err) {
+        result.statusCode = 401;
+        result.error = err.message;
+        res.status(statusCode).send(result);
+        return
+      }
+
+
+
           var pending;
           var costStatus = false;
           if (empty(clientWallet.pendingPay)) {
@@ -650,9 +666,27 @@ queryClean={
           }
 
 if(clientWallet.pendingPay[0].cleanerID){
+  Cleaner.findById(clientWallet.pendingPay[0].cleanerID , (err, clieaner) => {
+
+
+             if (err) {
+        result.statusCode = 401;
+        result.error = err.message;
+        res.status(statusCode).send(result);
+        return
+      }
+
   CleanerDetails.findOne({
-    cleanerID: clientWallet.pendingPay[0].cleanerID
+    cleanerID: clieaner.cleanerID
   },  (err, clieanerDetails) => {
+
+
+             if (err) {
+        result.statusCode = 401;
+        result.error = err.message;
+        res.status(statusCode).send(result);
+        return
+      }
 
     let {fullName, mobileNumber} = clieanerDetails;
 
@@ -674,6 +708,10 @@ if(clientWallet.pendingPay[0].cleanerID){
           return
 
   })
+
+
+  })
+
   }
   else {
 
