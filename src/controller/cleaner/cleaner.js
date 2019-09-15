@@ -11,11 +11,12 @@ import Rating from '../../model/Rating';
 //Bring in Client Model
 import ClientDetails from '../../model/client/clientDetails';
 
-//Bring in Client Walvar Model
-import ClientWalvar from '../../model/client/clientWalvar';
+//Bring in Client Wallet Model
+import ClientWallet from '../../model/client/clientWallet';
 
-//Bring in Cleaner Walvar Model
-import CleanerWalvar from '../../model/cleaner/cleanerWalvar';
+
+//Bring in Cleaner Wallet Model
+import CleanerWallet from '../../model/cleaner/cleanerWallet';
 
 //Bring in Cleaning Schedule Model
 import CleaningSchedule from '../../model/cleaningSchedule';
@@ -94,29 +95,29 @@ export default ({config, db}) =>{
                         return;
                     }else {
                         //console.log('Schedule Updated');
-                        var queryWalvar = {cleanerID : req.params.cleanerID}
+                        var queryWallet = {cleanerID : req.params.cleanerID}
                         Cleaner.findById(req.params.cleanerID, (err, cleaner)=>{
                             var CleanSpecID = cleaner.cleanerID;
                             // console.log(CleanSpecID);
-                            var queryWalvar2 = {cleanerID: CleanSpecID}
-                            CleanerWalvar.findOne((queryWalvar2), (err, walvarFound)=>{
+                            var queryWallet2 = {cleanerID: CleanSpecID}
+                            CleanerWallet.findOne((queryWallet2), (err, walvarFound)=>{
                                 var walvar = {};
                                 walvar.totalIncome = totalCharge + walvarFound. totalIncome;
                                 walvar.expectedIncome = totalCharge;
-                                CleanerWalvar.updateOne(queryWalvar, walvar, (err) =>{
+                                CleanerWallet.updateOne(queryWallet, walvar, (err) =>{
                                     //console.log(clientID);
                                     var clientQuery = {clientID: clientID}
-                                    ClientWalvar.findOne((clientQuery),(err, clientFound)=>{
-                                        var clientWalvar = {};
+                                    ClientWallet.findOne((clientQuery),(err, clientFound)=>{
+                                        var clientWallet = {};
                                         var pendingPay = {
                                             cleanDate: newLastCleanDate,
                                             cleanerID: cleanerID,
                                             cost: totalCharge,
                                             CleanSpecID
                                         }
-                                        clientWalvar.totalPaid = totalCharge + clientFound.totalPaid;
-                                        clientWalvar.pendingPay = pendingPay;
-                                        ClientWalvar.updateOne(clientQuery, clientWalvar,(err)=>{
+                                        clientWallet.totalPaid = totalCharge + clientFound.totalPaid;
+                                        clientWallet.pendingPay = pendingPay;
+                                        ClientWallet.updateOne(clientQuery, clientWallet,(err)=>{
                                             if(err){
                                                 result.error = err;
                                                 result.statusCode = 404;
@@ -160,7 +161,7 @@ export default ({config, db}) =>{
 
         var query = {cleanerID : req.params.cleanerID}
 
-        CleanerWalvar.updateOne(query, walvar, (err, walvar) =>{
+        CleanerWallet.updateOne(query, walvar, (err, walvar) =>{
             var result = {};
             var statusCode = 200;
             if(err){
@@ -170,7 +171,7 @@ export default ({config, db}) =>{
                 res.status(statusCode).send(result);
             }else {
                 // console.log('walvar and updated');
-                var message = 'Walvar update Successful';
+                var message = 'Wallet update Successful';
                 result.message = message ;
                 result.status = statusCode;
                 res.status(statusCode).send(result);

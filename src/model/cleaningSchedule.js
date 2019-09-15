@@ -85,7 +85,7 @@ let CleaningScheduleSchema = mongoose.Schema({
     updated:{
         type: Date,
         default: Date.now
-    }
+    },
     done: {
         type: Boolean,
         default: false
