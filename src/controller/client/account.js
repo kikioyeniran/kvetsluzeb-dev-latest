@@ -680,7 +680,7 @@ if(clientWallet.pendingPay[0].cleanerID){
    cleanerID: clieaner.cleanerID
   },  (err, clieanerDetails) => {
 
-console.log(clieaner, clieanerDetails)
+//console.log(clieaner, clieanerDetails)
              if (err) {
         result.statusCode = 401;
         result.error = err.message;
@@ -688,7 +688,7 @@ console.log(clieaner, clieanerDetails)
         return
       }
 
-    let {fullName, mobileNumber} = {fullName:'gg', mobileNumber:'pp'};
+    let {fullName, mobileNumber} = clieanerDetails
 
    result.statusCode = statusCode;
           result.user = client;
