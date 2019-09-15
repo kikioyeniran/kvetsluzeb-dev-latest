@@ -489,7 +489,7 @@ export default ({config, db}) => {
    let result =  {};
             let statusCode = 200;
         Cleaner.findOne({
-            cleanerID: req.params.id
+            cleanerID: req.params.cleanerID
         })
         .exec((err, cleaner)=> {
 
