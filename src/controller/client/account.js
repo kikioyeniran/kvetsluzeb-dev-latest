@@ -680,7 +680,7 @@ if(clientWallet.pendingPay[0].cleanerID){
    cleanerID: clieaner.cleanerID
   },  (err, clieanerDetails) => {
 
-//console.log(clieaner, clieanerDetails)
+//console.log(result.wallet.pendingPay)
              if (err) {
         result.statusCode = 401;
         result.error = err.message;
@@ -702,6 +702,7 @@ if(clientWallet.pendingPay[0].cleanerID){
 
           }
           // result.wallet = wallet;
+          console.log(result.wallet.pendingPay)
           result.StripePublishableKey =uuid();
           res.status(statusCode).send(result);
 
