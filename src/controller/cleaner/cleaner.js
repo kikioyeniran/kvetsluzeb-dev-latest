@@ -111,7 +111,8 @@ export default ({config, db}) =>{
                                         let pendingPay = {
                                             cleanDate: newLastCleanDate,
                                             cleanerID: cleanerID,
-                                            cost: totalCharge
+                                            cost: totalCharge,
+                                            CleanSpecID
                                         }
                                         clientWallet.totalPaid = totalCharge + clientFound.totalPaid;
                                         clientWallet.pendingPay = pendingPay;

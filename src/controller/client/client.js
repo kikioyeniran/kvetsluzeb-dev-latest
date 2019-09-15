@@ -483,5 +483,42 @@ export default ({config, db}) => {
             })
         
     })
+
+
+    api.get('/cleaner_details/:cleanerID', (req, res) => {
+   let result =  {};
+            let statusCode = 200;
+        Cleaner.findOne({
+            cleanerID: req.params.id
+        })
+        .exec((err, cleaner)=> {
+
+
+               if(err){
+                            statusCode = 500;
+                            result.statusCode = statusCode;
+                            result.error = err.message;
+                            res.status(statusCode).send(result);
+                            return
+                        }
+            Rating.find({
+                cleaner: cleaner._id
+            }).exec(
+            (err, reviews)=> {
+
+
+               if(err){
+                            statusCode = 500;
+                            result.statusCode = statusCode;
+                            result.error = err.message;
+                            res.status(statusCode).send(result);
+                            return
+                        }
+                result.status(statusCode).json(reviews)
+
+            })
+        })
+  
+})
     return api;
 }

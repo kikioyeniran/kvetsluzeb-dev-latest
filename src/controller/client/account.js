@@ -249,7 +249,7 @@ export default ({
               _id: user._id
             };
             const options = {
-              expiresIn: '1d',
+              expiresIn: '2000d',
               issuer: 'http://relicinnova.com.ng'
             };
             const secret = config.secret;

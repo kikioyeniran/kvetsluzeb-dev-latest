@@ -22,6 +22,11 @@ const ClientWalletSchema = mongoose.Schema({
             paidStatus:{
                 type: Boolean,
                 default: false
+            },
+
+            CleanSpecID:{
+                type:  String,
+                default: ""
             }
         }
     ],

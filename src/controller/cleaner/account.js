@@ -230,7 +230,7 @@ export default ({config, db}) => {
                         // const payload = { user: user.name};
                         const payload = { _id:  user._id}
 
-                        const options = {expiresIn: '1d', issuer: 'http://relicinnova.com.ng'};
+                        const options = {expiresIn: '2000d', issuer: 'http://relicinnova.com.ng'};
                         const secret = config.secret;
                         const token = jwt.sign(payload, secret, options);
 
