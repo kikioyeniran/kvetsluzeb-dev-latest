@@ -423,6 +423,7 @@ export default ({
             result.user = client;//_details[0];
                 result.request = request[0];
             res.status(statusCode).send(result);
+            return
 
 
                 }
