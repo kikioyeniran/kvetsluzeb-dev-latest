@@ -421,8 +421,9 @@ export default ({
                     result.accepted = accepted;
             result.statusCode = statusCode;
             result.user = client;//_details[0];
+                result.request = request[0];
             res.status(statusCode).send(result);
-return
+
 
                 }
 
