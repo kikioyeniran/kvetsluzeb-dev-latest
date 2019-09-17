@@ -172,7 +172,7 @@ export default ({
           bcrypt.genSalt(10, (err, salt) => {
             bcrypt.hash(newUser.password, salt, (err, hash) => {
               if (err) {
-                statusCode = 404;
+                statusCode = 500;
                 let error = err;
                 result.status = status;
                 result.error = error;
@@ -183,8 +183,9 @@ export default ({
               newUser.password = hash;
               newUser.save((err) => {
                 if (err) {
-                  statusCode = 502
+                  statusCode = 400
                   let error = err;
+                  console.log(err)
                   result.status = statusCode;
                   result.error = error;
                   res.status(statusCode).send(result);
@@ -421,6 +422,7 @@ export default ({
                     result.accepted = accepted;
             result.statusCode = statusCode;
             result.user = client;//_details[0];
+            
                 result.request = request[0];
             res.status(statusCode).send(result);
             return
