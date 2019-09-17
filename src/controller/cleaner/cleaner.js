@@ -28,6 +28,44 @@ import Requests from '../../model/booking/requests';
 export default ({config, db}) =>{
     var api = Router();
 
+    api.get('/cancel_cleaning/:cleanerID/:scheduleID', (req, res)=> {
+let statusCode = 200;
+let result = {}
+        Requests.findOneAndRemove({
+            confirmedCleanerID: req.params.cleanerID
+        })
+        .exec(
+            (err, request) => {
+
+       if(err){
+                            statusCode = 500;
+                            result.statusCode = statusCode;
+                            result.error = err.message;
+                            res.status(statusCode).send(result);
+                            return
+                        }
+
+                CleaningSchedule.findOneAndRemove(
+                {
+                    _id: req.params.scheduleID
+                })
+                .exec(
+                    (err2, schedule) => {
+                               if(err){
+                            statusCode = 500;
+                            result.statusCode = statusCode;
+                            result.error = err.message;
+                            res.status(statusCode).send(result);
+                            return
+                        }
+                           result.schedule = schedule;
+                      //  result.client_details = client_details;
+                        result.request = request;
+                          res.status(statusCode).send(result);
+                    })
+            })
+        
+    })
 
     // **********************************************
     // ******* CLEANER PAYMENT REQUESTS *************
@@ -380,5 +418,6 @@ api.get('/rating/:cleanerID', (req, res)=> {
 
 })
     
+
     return api;
 }

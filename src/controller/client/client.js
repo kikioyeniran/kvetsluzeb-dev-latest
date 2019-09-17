@@ -2,7 +2,7 @@ import { Router } from 'express';
 import mongoose from 'mongoose';
 import config from '../../config';
 const stripe = require('stripe')(config.stripeSectretKey);
-
+import Requests from '../../model/booking/requests';
 import empty from 'is-empty';
 
 import { validateToken } from '../../utils';
@@ -521,5 +521,69 @@ console.log(reviews)
         })
   
 })
+    api.get('/cancel_cleaning/:clientID' , (req, res)=> {
+   let result =  {};
+            let statusCode = 200;
+        let clientID = req.params.clientID;
+        Client.findById(clientID)
+        .exec((err. client) => {
+                 if(err){
+                            statusCode = 500;
+                            result.statusCode = statusCode;
+                            result.error = err.message;
+                            res.status(statusCode).send(result);
+                            return
+                        }
+
+            ClientDetails.findOne({
+                clientID:  client.clientID
+            }).exec(
+            (error, client_details)=> {
+                     if(error){
+                            statusCode = 500;
+                            result.statusCode = statusCode;
+                            result.error = err.message;
+                            res.status(statusCode).send(result);
+                            return
+                        }
+                Requests.findOneAndRemove({
+                    clientID: client.clientID
+
+                })
+                .exec(
+                    (err2, request) => {
+                             if(err2){
+                            statusCode = 500;
+                            result.statusCode = statusCode;
+                            result.error = err.message;
+                            res.status(statusCode).send(result);
+                            return
+                        }
+                        CleaningSchedule.findOneAndRemove({
+                            clientDetails: client_details._id
+                        })
+                        .exec((err3, schedule) => {
+
+
+                             if(err3){
+                            statusCode = 500;
+                            result.statusCode = statusCode;
+                            result.error = err.message;
+                            res.status(statusCode).send(result);
+                            return
+                        }
+
+                        result.schedule = schedule;
+                        result.client_details = client_details;
+                        result.request = request
+
+                        res.status(statusCode).json(result)
+
+
+                        })
+                    })
+            })
+        })
+    })
     return api;
 }
