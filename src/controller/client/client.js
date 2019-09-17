@@ -526,7 +526,7 @@ console.log(reviews)
             let statusCode = 200;
         let clientID = req.params.clientID;
         Client.findById(clientID)
-        .exec((err. client) => {
+        .exec((err, client) => {
                  if(err){
                             statusCode = 500;
                             result.statusCode = statusCode;
