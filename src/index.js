@@ -1,3 +1,4 @@
+import http from 'http';
 import express from 'express';
 import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
@@ -19,7 +20,7 @@ const PORT =process.env.PORT||8080;
 // importites from './routes';
 
 let app = express();
-app.set("port", 8080);
+app.server = http.createServer(app);
 
 // middleware
 // parse application/json
@@ -60,9 +61,8 @@ app.use(
 app.use('/api/v1', routes);
 
 // app.server.listen(process.env.PORT);
-const server = app.listen(app.get("port"), () => {
-  const port = server.address().port;
-  console.log("App listening on port " + port);
-});
+app.server.listen(PORT);
+// console.log(`started on port:${app.server.address().port}`);
+console.log(`started on http://127.0.0.1:${PORT}`);
 
 export default app;
