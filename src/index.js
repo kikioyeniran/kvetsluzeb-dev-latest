@@ -20,7 +20,7 @@ const PORT =process.env.PORT||8080;
 // importites from './routes';
 
 let app = express();
-app.server = http.createServer(app);
+app.set("port", 8080);
 
 // middleware
 // parse application/json
@@ -61,8 +61,9 @@ app.use(
 app.use('/api/v1', routes);
 
 // app.server.listen(process.env.PORT);
-app.server.listen(PORT);
-// console.log(`started on port:${app.server.address().port}`);
-console.log(`started on http://127.0.0.1:${PORT}`);
+const server = app.listen(app.get("port"), () => {
+  const port = server.address().port;
+  console.log("App listening on port " + port);
+});
 
 export default app;
